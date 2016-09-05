@@ -16,7 +16,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
+/plugins
+/hooks
+/.cordova
+/platforms
 # =========================
 # Operating System Files
 # =========================
