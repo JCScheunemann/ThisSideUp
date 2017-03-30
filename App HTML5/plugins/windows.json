@@ -1,0 +1,54 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-sqlite-legacy": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-device-motion": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "HelloCordova"
+        },
+        "cordova-plugin-battery-status": {
+            "PACKAGE_NAME": "HelloCordova"
+        }
+    },
+    "dependent_plugins": {}
+}
