@@ -37,6 +37,16 @@ def get_data(filename):				# read CSV database file
 			YData.append(float(row[2]))
 			ZData.append(float(row[3]))
 	return
+def get_csv_data(filename):				# read CSV database file
+	with open(filename, 'r') as csvfile:
+		csvFileReader = csv.reader(csvfile)
+		next(csvFileReader)	# skipping column names
+		for row in csvFileReader:
+			Times.append(float(row[0]))
+			XData.append(float(row[1]))
+			YData.append(float(row[2]))
+			ZData.append(float(row[3]))
+	return
 def Construct_model(Data, x): 		# build estimator model with ann rbf
 	svr_rbf = SVR(kernel= 'rbf', C= 1e3, gamma= 0.1) # defining the support vector regression models, using radial basis funcion
 	data_in=Data[0:len(Data)-x]
@@ -71,6 +81,13 @@ def plot_3(Time,triAxisData,title):	# plot 3 data on same scale
 	plt.title(title)
 	plt.legend()
 	plt.show()
+def plot_1(data,title):
+    plt.plot(range(1,len(data)+1), data, color= 'blue', label= 'X Data')
+    plt.xlabel('Time')
+    plt.ylabel('Value')
+    plt.title(title)
+    plt.legend()
+    plt.show()
 def to_periodic_sampled(Time, triAxisData): # convert time series data to periodic sampled data (TODO using linear interpolation)
 	tmp=3*[[0]]#[np.zeros(len(Time)/2)];
 	tmp[0][0]=triAxisData[0][0];

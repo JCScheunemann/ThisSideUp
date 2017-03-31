@@ -66,7 +66,7 @@
       var watchID;
       var BtnStartDataLog=document.getElementById("BtnStartDataLog");
       var myDB = null;
-      var msg='time,x,y,z';
+      var msg="time,x,y,z\n";
       var lastTime=0;
       document.getElementById('status').innerHTML="Iniciando o app...";
 
@@ -132,7 +132,7 @@
                   if(!confirm("manter os dados aquisitados anteriormente")){
                     alert("dados anteriores excluidos!")
                     data=Array();
-                    msg='time,x,y,z';
+                    msg="time,x,y,z\n";
                     datacount=0;
                     holddata=false;
                   }
