@@ -66,7 +66,7 @@
       var watchID;
       var BtnStartDataLog=document.getElementById("BtnStartDataLog");
       var myDB = null;
-      var msg='';
+      var msg='time,x,y,z';
       var lastTime=0;
       document.getElementById('status').innerHTML="Iniciando o app...";
 
@@ -132,7 +132,7 @@
                   if(!confirm("manter os dados aquisitados anteriormente")){
                     alert("dados anteriores excluidos!")
                     data=Array();
-                    msg="";
+                    msg='time,x,y,z';
                     datacount=0;
                     holddata=false;
                   }
@@ -184,10 +184,10 @@
           document.getElementById('txt1').innerHTML="Gerando o arquivo";
           for(i=0;i<datacount;i++){
             //convert data do string(csv format)
-            msg+=(data[i][1]&0xfffff).toString()+";"
-                +data[i][0][0].toFixed(4)+';'
-                +data[i][0][1].toFixed(4)+";"
-                +data[i][0][2].toFixed(4)+";\n";
+            msg+=(data[i][1]&0xffffff).toString()+","
+                +data[i][0][0].toFixed(4)+','
+                +data[i][0][1].toFixed(4)+","
+                +data[i][0][2].toFixed(4)+"\n";
             //msg=msg+floatToChar(data[i][0][0])+floatToChar(data[i][0][1])+floatToChar(data[i][0][2])+intToChar(data[i][1])+';';
           }
           document.getElementById('txt1').innerHTML="Arquivo gerado";
