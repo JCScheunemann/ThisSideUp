@@ -19,8 +19,9 @@ N=6		#n points of memory
 k=100	#n points data test
 a=.5 	#sin timestep
 testeModelo=0	#simulatio model flag
-displayMsg=1
-stDevTol= 1		#standart deviation tolerance
+displayMsg=0
+showplots=1
+stDevTol= 4		#standart deviation tolerance
 
 NpWindow=30 	#Data window size
 SampleRate=20	#Sample rate of sensor
@@ -40,13 +41,18 @@ def get_data(filename):				# read CSV database file
 def get_csv_data(filename):				# read CSV database file
 	with open(filename, 'r') as csvfile:
 		csvFileReader = csv.reader(csvfile)
+		flag=1   
+		tmp=[]
 		next(csvFileReader)	# skipping column names
-		for row in csvFileReader:
-			Times.append(float(row[0]))
-			XData.append(float(row[1]))
-			YData.append(float(row[2]))
-			ZData.append(float(row[3]))
-	return
+          	for row in csvFileReader:
+			if(flag):
+				tmp=[[float(x)] for x in row]
+         			flag=0
+    			else:
+				for i in range(0,len(row)):
+						tmp[i].append(float(row[i]))
+					
+	return tmp
 def Construct_model(Data, x): 		# build estimator model with ann rbf
 	svr_rbf = SVR(kernel= 'rbf', C= 1e3, gamma= 0.1) # defining the support vector regression models, using radial basis funcion
 	data_in=Data[0:len(Data)-x]
@@ -58,7 +64,7 @@ def G_detect(triAxisData): 			# detect G force
 	med=[np.mean(i) for i in triAxisData]
 	print med
 	res=np.sqrt(np.sum(np.square(med)))
-	if(res>9.6 and res<10):
+	if(res>9 and res<10.5):
 		if(displayMsg):
 			print "Forca G detectada"
 		return True
@@ -72,6 +78,11 @@ def high_pass(triAxisData):			# delete DC and very low frequency
 		for i in range(NpWindow,len(triAxisData[0])):
 			mean[j][i]=((NpWindow-1)*mean[j][i-1] + triAxisData[j][i])/NpWindow
 	return np.array(triAxisData)-mean
+def low_pass(data,N):
+	tmp=[]
+	for i in range(N,len(data)): 
+ 		tmp.append(np.sum(data[i-N:i])/N)
+	return tmp
 def plot_3(Time,triAxisData,title):	# plot 3 data on same scale
 	plt.plot(Time, triAxisData[0], color= 'blue', label= 'X Data')
 	plt.plot(Time, triAxisData[1], color= 'red', label= 'Y Data')
@@ -95,7 +106,7 @@ def to_periodic_sampled(Time, triAxisData): # convert time series data to period
 	tmp[2][0]=triAxisData[2][0];
 	i=1
 	j=0
-	time=0
+	#time=0
 	while (i<len(Time)):
 		if(Time[i-1]<Time[i]):
 			j+=1
@@ -119,25 +130,25 @@ def detect_deviation(triAxisData):	# detec if standart deviation is under tolera
 #	Run Script
 #
 print strftime("%Y-%m-%d %H:%M:%S", gmtime())+"-Inicio do porcessamento do modelo"
-get_data('sin.csv') # Load sensor database
+get_data('lado_sel.csv') # Load sensor database
 
 #initial analysis
 #G detect
 i=-1;
-flag=False
+flag=0
 while(i<(len(Times)/NpWindow) or flag): #Search for the minimum conditions for analysis
 	i+=1
 	#detect G force and standart deviation
 	tmp=[XData[i*NpWindow:NpWindow*(1+i)],YData[i*NpWindow:NpWindow*(1+i)],ZData[i*NpWindow:NpWindow*(1+i)]]
-	flag=G_detect(tmp) and detect_deviation(tmp)
+	flag=G_detect(tmp) #and detect_deviation(tmp)
 if (flag): # Minimum conditions were found
 	#high pass filter
 	tmp=high_pass([XData[i*NpWindow:len(Times)],YData[i*NpWindow:len(Times)],ZData[i*NpWindow:len(Times)]])
-	if(displayMsg):
+	if(showplots):
 		plot_3(Times,tmp)	#plot data filtered
 	#fft
 	fft=[np.fft.rfft(x) for x in tmp]
-	if(displayMsg):
+	if(showplots):
 		plot_3(range(0,len(fft[0])),fft)	#plot fft of data
 else:
 	print "nao encontrado o eixo G ou desvio padrao eh maior que a tolerancia, nao eh possivel a analise"
